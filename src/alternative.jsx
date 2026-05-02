@@ -6,23 +6,36 @@ const App = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { name, job, image, text } = reviewsData[activeIndex];
 
+  const checkNumber = (number) => {
+    if (number > reviewsData.length - 1) {
+      return 0;
+    }
+    if (number < 0) {
+      return reviewsData.length - 1;
+    }
+
+    return number;
+  };
+
   const nextReview = () => {
     setActiveIndex((prevActiveIndex) => {
-      return (prevActiveIndex + 1) % reviewsData.length;
+      const newActiveIndex = prevActiveIndex + 1;
+      return checkNumber(newActiveIndex);
     });
   };
 
   const prevReview = () => {
     setActiveIndex((prevActiveIndex) => {
-      return (prevActiveIndex - 1 + reviewsData.length) % reviewsData.length;
+      const newActiveIndex = prevActiveIndex - 1;
+      return checkNumber(newActiveIndex);
     });
   };
 
   const randomReview = () => {
-    let randomNumber = Math.floor(Math.random() * reviewsData.length);
-    if (randomNumber === activeIndex) randomNumber++;
-    const newActiveIndex = randomNumber % reviewsData.length;
-    setActiveIndex(newActiveIndex);
+    const randomNumber = Math.floor(Math.random() * reviewsData.length);
+    console.log(randomNumber);
+    if (randomNumber === activeIndex) return randomReview();
+    setActiveIndex(randomNumber);
   };
 
   return (
